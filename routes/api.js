@@ -5,9 +5,15 @@ async function getPrice(stock) {
   try {
     const res = await fetch(url);
     const info = await res.json();
-    return info.latestPrice;
+    return {
+      result: info.latestPrice, 
+      pass: true
+    };
   } catch (err) {
-    console.log(err.message);
+    return {
+      result: "", 
+      pass: false
+    };
   }
 }
 
@@ -22,7 +28,11 @@ module.exports = function (app) {
 
       let prices = [];
       for (let stock of stocks) {
-        let price = await getPrice(stock)
+        let {price, pass} = await getPrice(stock);
+        if (!pass) {
+          output = {error: "One or more stock symbols could not be found"};
+          break;
+        }
         prices.push(price);
       }
 
