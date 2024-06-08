@@ -5,6 +5,7 @@ const server = require('../server');
 
 chai.use(chaiHttp);
 
+// Clear data before running tests
 suite('Functional Tests', function() {
     test('Viewing one stock', function(done) {
         chai
